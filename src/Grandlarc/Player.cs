@@ -10,7 +10,7 @@ namespace Grandlarc
     [PooledType]
     public class Player : BasePlayer
     {
-        private static readonly Random Random = new();
+        private static readonly Random Random = new Random();
         private DateTime _lastSelectionTime;
         public bool HasCitySelected;
 
@@ -125,12 +125,14 @@ namespace Grandlarc
 
             _lastSelectionTime = now;
 
-            SelectedCity = leftright switch
+            if (leftright < 0)
             {
-                < 0 => SelectedCity.Next(),
-                > 0 => SelectedCity.Previous(),
-                _ => SelectedCity
-            };
+                SelectedCity = SelectedCity.Next();
+            }
+            else if (leftright > 0)
+            {
+                SelectedCity = SelectedCity.Previous();
+            }
 
             PrepareSelectedCity();
         }
